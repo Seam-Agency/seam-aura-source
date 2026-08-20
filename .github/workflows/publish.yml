@@ -50,24 +50,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to GitHub Packages
+        if: ${{ vars.GITHUB_PACKAGES_ENABLED == 'true' }}
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Verify published package installation
+      - name: Verify public release tarball installation
         shell: bash
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          version="$(node -p "require('./package.json').version")"
           consumer="$RUNNER_TEMP/seam-aura-consumer"
-          npmrc="$RUNNER_TEMP/seam-aura-consumer.npmrc"
-          {
-            echo "registry=https://registry.npmjs.org"
-            echo "@seam-agency:registry=https://npm.pkg.github.com"
-            echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}"
-          } > "$npmrc"
-          NPM_CONFIG_USERCONFIG="$npmrc" npm install --ignore-scripts --prefix "$consumer" \
-            "@seam-agency/seam-aura@$version" react@19 react-dom@19
+          tarball="https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/seam-aura.tgz"
+          npm install --ignore-scripts --prefix "$consumer" "$tarball" react@19 react-dom@19
           test -f "$consumer/node_modules/@seam-agency/seam-aura/dist/index.js"
           test -f "$consumer/node_modules/@seam-agency/seam-aura/dist/styles.css"

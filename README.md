@@ -154,7 +154,7 @@ npm pack --dry-run
 ## Publishing
 
 - Pull requests and pushes run type checks, unit tests, package builds, a consumer install, and a package dry run.
-- Versioned releases attach both immutable and stable-name public tarballs and publish to GitHub Packages.
+- Versioned releases attach both immutable and stable-name public tarballs; GitHub Packages can be enabled as an additional organization channel.
 - Demo code, private assets, source maps, and development history are not included in this public source repository or its release tarball.
 
 ## License
