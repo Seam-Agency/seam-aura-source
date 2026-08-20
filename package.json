@@ -1,6 +1,6 @@
 {
   "name": "@seam-agency/seam-aura",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A source-backed WebGL edge-light and travelling distortion effect for React.",
   "type": "module",
   "license": "MIT",

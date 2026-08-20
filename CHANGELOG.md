@@ -2,6 +2,15 @@
 
 All notable changes to this project are documented in this file.
 
+## [0.2.1] - 2026-08-20
+
+### Fixed
+
+- Kept Paper and Nocturne on the same emissive shader path while improving the
+  Paper demo surface contrast without adding a theme-specific ink branch.
+- Restored semantic foreground colors across the Copy Prompt Haloform layers so
+  the label and icon remain readable throughout both theme states.
+
 ## [0.2.0] - 2026-08-20
 
 ### Added

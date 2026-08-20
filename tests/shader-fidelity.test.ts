@@ -35,25 +35,12 @@ describe("source equation invariants", () => {
     expect(fragmentShaderSource).not.toContain("sweepWidth");
   });
 
-  it("uses a broad chromatic ink flow without a hard pulse ring", () => {
-    expect(fragmentShaderSource).toContain("float sourceLuminance");
-    expect(fragmentShaderSource).toContain(
-      "smoothstep(0.62, 0.84, sourceLuminance) * u_hasSource",
-    );
-    expect(fragmentShaderSource).toContain("float edgeContour");
-    expect(fragmentShaderSource).toContain("float surfaceWash");
-    expect(fragmentShaderSource).toContain("float pulseInk");
-    expect(fragmentShaderSource).toContain(
-      "smoothstep(0.03, 0.74, min(1.0, wave)) * 0.30",
-    );
-    expect(fragmentShaderSource).toContain("vec3 inkTint");
-    expect(fragmentShaderSource).toContain(
-      "sourceLinear * mix(vec3(1.0), inkTint, inkMask)",
-    );
-    expect(fragmentShaderSource).toContain(
-      "mix(emissiveColor, lightSurfaceColor, lightSurface)",
-    );
-    expect(fragmentShaderSource).not.toContain("float pulseContour");
-    expect(fragmentShaderSource).not.toContain("contrastEnergy");
+  it("uses one emissive color path for every source luminance", () => {
+    expect(fragmentShaderSource).toContain("vec3 color = emissiveColor");
+    expect(fragmentShaderSource).not.toContain("sourceLuminance");
+    expect(fragmentShaderSource).not.toContain("lightSurface");
+    expect(fragmentShaderSource).not.toContain("lightSampleUv");
+    expect(fragmentShaderSource).not.toContain("inkMask");
+    expect(fragmentShaderSource).not.toContain("inkTint");
   });
 });

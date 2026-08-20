@@ -118,36 +118,7 @@ void main() {
   emissiveColor +=
     wave * (inner * 0.25 + outer * 0.25 + glowColor * 0.05);
   emissiveColor = min(emissiveColor, vec3(1.0));
-
-  // Additive color naturally fades into bright source pixels. On those pixels,
-  // spread the rotating palette across the full surface as a restrained wash,
-  // then reinforce the frame edge. The pulse shares that chromatic ink and
-  // follows the broad production envelope rather than drawing a separate hard
-  // ring. Dark sources stay on the untouched emissive path above.
-  float sourceLuminance = dot(base.rgb, vec3(0.2126, 0.7152, 0.0722));
-  float lightSurface =
-    smoothstep(0.62, 0.84, sourceLuminance) * u_hasSource;
-  float edgeEnergy = max(0.0, glow - 0.005);
-  float edgeContour =
-    smoothstep(0.015, 0.28, edgeEnergy) * 0.58;
-  float surfaceWash = min(1.0, u_amount) * 0.13;
-  float pulseInk =
-    smoothstep(0.03, 0.74, min(1.0, wave)) * 0.30;
-  float inkMask = clamp(
-    surfaceWash + edgeContour * u_amount + pulseInk,
-    0.0,
-    0.72
-  );
-  float glowPeak = max(max(glowColor.r, glowColor.g), glowColor.b);
-  vec3 inkHue = sqrt(clamp(
-    glowColor / max(glowPeak, 0.001),
-    vec3(0.0),
-    vec3(1.0)
-  ));
-  vec3 inkTint = mix(vec3(0.06), inkHue, 0.92);
-  vec3 lightSurfaceColor =
-    sourceLinear * mix(vec3(1.0), inkTint, inkMask);
-  vec3 color = mix(emissiveColor, lightSurfaceColor, lightSurface);
+  vec3 color = emissiveColor;
 
   glow = dot(glowColor, vec3(0.2126, 0.7152, 0.0722)) * glow;
   float alpha = min(
